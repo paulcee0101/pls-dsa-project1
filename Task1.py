@@ -19,28 +19,20 @@ Print a message:
 "There are <count> different telephone numbers in the records."
 """
 
-def flatten(l):
-    """
-    Function to extract only valid telephone entries from records provided as list
-    Run Time Analysis = O(n^2)
-    """
-    flat_list = [j for i in l for idx, j in enumerate(i) if idx in (0,1)]
+def task1():
 
-    return flat_list
+    telephone_numbers = set()
+    for record in texts:
+        telephone_numbers.add(record[0])
+        telephone_numbers.add(record[1])
+    for record in calls:
+        telephone_numbers.add(record[0])
+        telephone_numbers.add(record[1])
 
-def test():
-    """
-    By storing flattened list in a single lis tand converting to set to retrieve unique counts
-    Run Time Analysis = O(n^2 + n^2 + 4) -> O(2n^2 + 4) -> O(n^2)
-    """
-    tmp_text = flatten(texts)
-    tmp_call = flatten(calls)
-    num_records = tmp_text + tmp_call
-    count = len(set(num_records))
-    print("There are {} different telephone numbers in the records."\
-        .format(count))
+    print("There are {count} different telephone numbers in the records."\
+        .format(count = len(telephone_numbers)))
 
     return None
 
 if __name__ == "__main__":
-    test()
+    task1()
