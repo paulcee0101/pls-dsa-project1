@@ -44,98 +44,55 @@ to other fixed lines in Bangalore."
 The percentage should have 2 decimal digits
 """
 
-"""
-Assumptions:
-1. All telephone numbers found within calls.csv is from Bangalore
-2. Area codes can be any numbers as long it starts with 0 and it is
-  encapsulated within "()"
-3. Mobile Prefixes can start with either "7", "8", or "9"; they are
-  first 4 digits long
-4. Telemarketers are not being requested by the question and thus have
-  been omitted from the answer
-"""
-
 """ PART A """
-def getAreaCode(num):
-    """
-    Function to retrieve Area Codes of Fixed Telephone Lines
-    Run Time Analysis = O(3) -> O(1)
-    """
-    tmp_idx = (num.index("("), num.index(")"))
-    area_code = num[tmp_idx[0] : tmp_idx[-1] + 1]
 
-    return area_code
+def task3partA():
 
-def getMobilePrefix(num):
-    """
-    Function to retrieve Mobile Prefixes from Mobile Numbers
-    Run Time Analysis = O(1)
-    """
-    return num[:5]
+    telephone_codes = set()
 
-def flatten(l):
-    """
-    Function to extract only valid telephone entries from records provided as list
-    Run Time Analysis = O(n^2)
-    """
-    flat_list = [j for i in l for idx, j in enumerate(i) if idx in (0,1)]
+    for record in calls:
+      if record[0].startswith("(080)"):
+          if record[1].startswith("("):
+              telephone_codes.add(record[1][record[1].index("(") + 1 : record[1].index(")")])
+          elif record[1].startswith("7") or record[1].startswith("8") or record[1].startswith("9"):
+              telephone_codes.add(record[1][:4])
+          elif record[1].startswith("140"):
+              telephone_codes.add("140")
+          else:
+              pass
 
-    return flat_list
-
-def partA():
-    """
-    Run Time Analysis = O(2 + n^2 + 5n + 3 + 1 + 2 + 1 + 2n + 2n) -> O(n^2 + 9n + 9) -> O(n^2)
-    """
-    area_codes = []
-    mobile_prefixes = []
-
-    flat_list = flatten(calls)
-
-    for num in flat_list:
-        if num.startswith("("):
-            area_codes.append(getAreaCode(num))
-        elif num.startswith("7") or num.startswith("8") or num.startswith("9"):
-            mobile_prefixes.append(getMobilePrefix(num))
-        else:
-            continue
-
-    area_codes = sorted(set(area_codes))
-    mobile_prefixes = sorted(set(mobile_prefixes))
+    telephone_codes = sorted(telephone_codes)
 
     print("The numbers called by people in Bangalore have codes:")
-    for num in area_codes:
-      print(num)
-    for num in mobile_prefixes:
-      print(num)
+    for idx in range(len(telephone_codes)):
+        print(telephone_codes[idx])
 
     return None
 
 """ PART B """
 
-def partB():
-    """
-    Run Time Analysis = O(n^2 + 4 + 5n + 3) -> O(n^2 + 5n + 7) -> O(n^2)
-    """
-    flat_list = flatten(calls)
-    caller_list = flat_list[0::2]
-    receiver_list = flat_list[1::2]
+def task3partB():
 
-    total_calls = len(calls)
-    count = 0
+    count_caller = 0
+    count_receiver = 0
 
-    for caller, receiver in zip(caller_list, receiver_list):
-        if caller.startswith("(") and receiver.startswith("("):
-            count += 1
+    for record in calls:
+        if record[0].startswith("(080)"):
+            count_caller += 1
+            if record[1].startswith("(080)"):
+                count_receiver += 1
+            else:
+                pass
         else:
             continue
 
-    percentage = (count / total_calls) * 100
+    percentage = (count_receiver / count_caller) * 100
     print("{:.2f} percent of calls from fixed lines in Bangalore are calls to other fixed lines in Bangalore."\
       .format(percentage))
 
     return None
 
 if __name__ == "__main__":
-    partA()
-    partB()
+    task3partA()
+    task3partB()
 
