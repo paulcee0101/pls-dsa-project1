@@ -29,42 +29,27 @@ The list of numbers should be print out one per line in lexicographic order with
 Assuming that telemarketer numbers that start with code "140" is not required by question
 """
 
-def flatten(l):
-    """
-    Function to extract only valid telephone entries from records provided as list
-    Run Time Analysis = O(n^2)
-    """
-    flat_list = [j for i in l for idx, j in enumerate(i) if idx in (0,1)]
+def task4():
 
-    return flat_list
+    caller_numbers = set()
+    non_telemarketer_numbers = set()
 
-def test():
-    """
-    Run Time Analysis = O(1 + n^2 + 2 + 8n + 2 + 2n + 1) - > O(n^2 + 10n + 6) -> O(n^2)
-    """
-    telemarketer_list = []
+    for record in texts:
+        non_telemarketer_numbers.add(record[0])
+        non_telemarketer_numbers.add(record[1])
 
-    text_list = flatten(texts)
-    call_list = flatten(calls)
-    caller_list = call_list[0::2]
-    receiver_list = call_list[1::2]
+    for record in calls:
+        caller_numbers.add(record[0])
+        non_telemarketer_numbers.add(record[1])
 
-    for num in caller_list:
-        if num not in text_list:
-            if num not in receiver_list:
-                telemarketer_list.append(num)
-            else:
-                continue
-        else:
-            continue
-
-    telemarketer_list = sorted(set(telemarketer_list))
+    telemarketer_numbers = caller_numbers.difference(non_telemarketer_numbers)
+    telemarketer_numbers = sorted(telemarketer_numbers)
 
     print("These numbers could be telemarketers: ")
-    for num in telemarketer_list:
+    for num in telemarketer_numbers:
         print(num)
 
     return None
 
 if __name__ == "__main__":
-    test()
+    task4()
