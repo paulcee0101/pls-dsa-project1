@@ -32,30 +32,18 @@ Method:
     to retrieve telephone number that corresponds to max duration
 """
 
-def maxCall(l):
-    '''
-    Function to segregate caller, receiver and duration of calls in each records
-    Run Time Analysis = O(n^2 + n + 5 + 3n + 1 + n + 1) -> O(n^2 + 5n + 7) -> O(n^2)
-    '''
-    tmp_list = [j for i in l for idx, j in enumerate(i) if idx in (0, 1, 3)]
-    num_list = [j for idx, j in enumerate(tmp_list) if idx % 3 != 2]
-    unique_num_list = set(num_list)
-    caller_list = num_list[0::2]
-    receiver_list = num_list[1::2]
-    duration_list = tmp_list[2::3]
+def task2():
 
-    telephone_dict = dict.fromkeys(unique_num_list, 0)
+    telephone_numbers = dict()
 
-    for caller, receiver, duration in zip(caller_list, receiver_list, duration_list):
-        telephone_dict[caller] += int(duration)
-        telephone_dict[receiver] += int(duration)
-
-    max_duration = max(telephone_dict.values())
-    max_telephone = [num for num, duration in telephone_dict.items() if duration == max_duration]
-
-    print("{} spent the longest time, {} seconds, on the phone during September 2016.".format(max_telephone[0], max_duration))
+    for record in calls:
+        telephone_numbers[record[0]] = telephone_numbers.get(record[0], 0) + int(record[-1])
+        telephone_numbers[record[1]] = telephone_numbers.get(record[1], 0) + int(record[-1])
+    num_with_max_call = sorted(telephone_numbers, reverse=True, key=lambda x: telephone_numbers[x])[0]
+    print("{} spent the longest time, {} seconds, on the phone during September 2016."\
+        .format(num_with_max_call, telephone_numbers[num_with_max_call]))
 
     return None
 
 if __name__ == "__main__":
-    maxCall(calls)
+    task2()
