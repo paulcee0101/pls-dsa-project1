@@ -39,7 +39,7 @@ def task2():
     for record in calls:
         telephone_numbers[record[0]] = telephone_numbers.get(record[0], 0) + int(record[-1])
         telephone_numbers[record[1]] = telephone_numbers.get(record[1], 0) + int(record[-1])
-    num_with_max_call = sorted(telephone_numbers, reverse=True, key=lambda x: telephone_numbers[x])[0]
+    num_with_max_call = max(telephone_numbers, key=lambda x: telephone_numbers[x])
     print("{} spent the longest time, {} seconds, on the phone during September 2016."\
         .format(num_with_max_call, telephone_numbers[num_with_max_call]))
 
